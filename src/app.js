@@ -17,4 +17,7 @@ app.get('/', (req, res) =>{
     res.send('API funcionando!')
 })
 
+const userRoutes = require('./routes/userRouter')
+app.use('/api', userRoutes)
+
 module.exports = app

@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/J-Ferre1ra/Back-Stock-Master#readme",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
