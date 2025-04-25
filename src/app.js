@@ -23,4 +23,16 @@ app.use('/api', userRoutes)
 const authRouter = require('./routes/authRoutes')
 app.use('/api', authRouter)
 
+const dashboardRoutes = require('./routes/dashboardRoutes')
+app.use('/api', dashboardRoutes)
+
+const produtoRoutes = require('./routes/produtoRoutes')
+app.use('/api', produtoRoutes)
+
+const vendaRoutes = require('./routes/vendaRoutes')
+app.use('/api', vendaRoutes)
+
+const transacaoRoutes = require('./routes/transacaoRoutes')
+app.use('/api', transacaoRoutes)
+
 module.exports = app
