@@ -22,4 +22,4 @@ const transacaoSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('Transacao', transacaoSchema)
+module.exports = mongoose.model('Transacao', transacaoSchema, 'transacoes')
