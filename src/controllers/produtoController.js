@@ -19,7 +19,16 @@ const criarProduto = async (req, res) =>{
 
 const listarProdutos = async (req, res) =>{
     try{
-        const produtos = await Produto.find()
+        const { ordenarPor, ordem, nome } = req.query
+
+        const sortField = ordenarPor || 'nome'
+        const sortOrder = ordem === 'desc' ? -1 : 1
+
+        const filtroNome = nome ? { nome: { $regex: nome, $options: 'i' } } : {}
+
+        const produtos = await Produto.find(filtroNome)
+        .sort({ [sortField]: sortOrder })
+
         res.json(produtos)
     }catch (err){
         res.status(500).json({erro: 'Erro ao listar os produtos'})
