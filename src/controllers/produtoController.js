@@ -1,4 +1,5 @@
 const Produto = require('../models/produto')
+const Log = require('../models/log')
 
 const criarProduto = async (req, res) =>{
     try{
@@ -10,6 +11,12 @@ const criarProduto = async (req, res) =>{
 
         const novoProduto = new Produto({nome, quantidade, preco})
         await novoProduto.save()
+
+        const log = new Log({
+            usuario: req.usuario.id,
+            acao: `Criou o produto: ${novoProduto.nome}`
+        })
+        await log.save()
 
         res.status(201).json(novoProduto)
     }catch (err) {
@@ -51,6 +58,12 @@ const editarProduto = async (req, res) =>{
         
         await produto.save()
 
+        const log = new Log({
+            usuario: req.usuario.id,
+            acao: `Editou o produto: ${produto.nome}`
+        })
+        await log.save()
+
         res.json(produto)
     }catch(err){
         console.error(err)
@@ -68,6 +81,13 @@ const excluirProduto = async (req, res) =>{
         }
 
         await Produto.findByIdAndDelete(id)
+
+        const log = new Log({
+            usuario: req.usuario.id,
+            acao: `Excluiu o produto: ${produto.nome}`
+        })
+        await log.save()
+
         res.json({mensagem: 'Produto excluído com sucesso'})
     }catch (err){
         console.error(err)
