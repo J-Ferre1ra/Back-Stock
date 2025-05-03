@@ -35,6 +35,9 @@ app.use('/api', vendaRoutes)
 const transacaoRoutes = require('./routes/transacaoRoutes')
 app.use('/api', transacaoRoutes)
 
+const clienteRoutes = require('./routes/clienteRoutes')
+app.use('/api', clienteRoutes)
+
 app.use(express.json({limit: '10mb'}))
 app.use(express.urlencoded({extended: true, limit: '10mb'}))
 
