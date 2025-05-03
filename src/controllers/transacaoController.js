@@ -1,10 +1,12 @@
 const transacao = require('../models/transacao')
 const Produto = require('../models/produto')
+const transacaoLogController = require('./transacaoLogController')
 
 const criarTransacao = async (req, res) =>{
     try{
         const {tipo, produto, quantidade} = req.body
         const produtoExistente = await Produto.findById(produto)
+        
         if (!produtoExistente) {
             return res.status(400).json({erro: 'Produto não encontrado'})
         }
@@ -17,11 +19,17 @@ const criarTransacao = async (req, res) =>{
         await novaTransacao.save()
 
         if (tipo === 'saída') {
-            produtoExistentequantiade -= quantidade
+            produtoExistente.quantidade -= quantidade
         }else{
             produtoExistente.quantidade += quantidade
         }
         await produtoExistente.save()
+
+        await transacaoLogController.registrarLogTransacao(
+            req.usuario.id,
+            `${req.usuario.nome} registrou ${quantidade} unidades do produto ${produtoExistente.nome} como ${tipo}`,
+            novaTransacao._id
+        )
 
         res.status(201).json(novaTransacao)
     }catch (err){
@@ -34,7 +42,7 @@ const listarTransacoes = async (req, res) =>{
         const transacoes = await transacao.find()
         res.json(transacoes)
     }catch (err){
-        res.status(500).json({erro: 'Eroo ao listar as transações'})
+        res.status(500).json({erro: 'Erro ao listar as transações'})
     }
 }
 
