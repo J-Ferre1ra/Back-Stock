@@ -3,7 +3,7 @@ const mongoose = require('mongoose')
 const transacaoSchema = new mongoose.Schema({
     tipo: {
         type: String,
-        enum: ['entrada', 'saída'],
+        enum: ['entrada', 'saída', 'venda'],
         required: true
     },
     produto: {
@@ -15,6 +15,14 @@ const transacaoSchema = new mongoose.Schema({
         type: Number,
         required: true,
         min: [1, 'A quantidade deve ser maior que 0']
+    },
+    valor: {
+        type: Number,
+        required: true
+    },
+    observacao: {
+        type: String,
+        default: ''
     },
     data: {
         type: Date,
