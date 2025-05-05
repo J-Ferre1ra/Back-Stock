@@ -17,8 +17,8 @@ const produtoSchema = new mongoose.Schema({
     },
     preco: {
         type: Number,
-        required: [true, 'O preço é obrigatório.'],
-        min: [0.01, 'O preço deve ser maior que 0']
+        default: 0,
+        required: false
     }
 })
 

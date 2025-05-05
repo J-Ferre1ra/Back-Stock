@@ -15,11 +15,14 @@ const criarTransacao = async (req, res) =>{
             return res.status(400).json({ erro: 'Estoque insuficiente' })
         }
 
+        const valorFinal = valor || produtoExistente.preco
+        const valorTotal = valorFinal * quantidade
+
         const novaTransacao = new transacao({
             tipo,
             produto: produtoExistente._id, 
             quantidade,
-            valor,
+            valor: valorTotal,
             observacao
         })
 
