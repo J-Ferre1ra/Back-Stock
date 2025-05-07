@@ -1,5 +1,6 @@
 const transacao = require('../models/transacao')
 const Produto = require('../models/produto')
+const LogTransacao = require("../models/logTransacao")
 
 const criarTransacao = async (req, res) =>{
     try{
@@ -36,6 +37,14 @@ const criarTransacao = async (req, res) =>{
 
         await produtoExistente.save()
 
+        const log = new LogTransacao({
+            usuario: req.usuario.id,
+            acao: `${req.usuario.nome} registrou a ${tipo} de ${quantidade} unidades do produto ${produtoExistente.nome} por R${valorFinal}`,
+            transacaoId: novaTransacao._id 
+        })
+
+        await log.save()
+
         res.status(201).json(novaTransacao)
     }catch (err) {
         console.error(err)
@@ -55,4 +64,13 @@ const listarTransacoes = async (req, res) =>{
     }
 }
 
-module.exports = { criarTransacao, listarTransacoes }
+const listarLogs = async (req, res) =>{
+    try{
+        const logs = await LogTransacao.find().populate('usuario', 'nome').populate('transacaoId').exec()
+        res.json(logs)
+    }catch(err) {
+        res.status(500).json({erro: 'Erro ao listar logs de transação'})
+    }
+}
+
+module.exports = { criarTransacao, listarTransacoes, listarLogs }

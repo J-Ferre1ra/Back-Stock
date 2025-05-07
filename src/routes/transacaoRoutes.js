@@ -7,4 +7,6 @@ router.post('/transacoes', autenticarToken, transacaoController.criarTransacao)
 
 router.get('/transacoes', autenticarToken, transacaoController.listarTransacoes)
 
+router.get('/logs/transacoes', autenticarToken, transacaoController.listarLogs)
+
 module.exports = router
