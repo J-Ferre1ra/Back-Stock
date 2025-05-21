@@ -41,4 +41,7 @@ app.use('/api', clienteRoutes)
 app.use(express.json({limit: '10mb'}))
 app.use(express.urlencoded({extended: true, limit: '10mb'}))
 
+const despesaRoutes = require('./routes/despesaRoutes')
+app.use('/api', despesaRoutes)
+
 module.exports = app
