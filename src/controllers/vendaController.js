@@ -1,5 +1,7 @@
 const venda = require('../models/venda')
 const Produto = require('../models/produto')
+const transacao = require('../models/transacao');
+
 
 const criarVenda = async (req, res) =>{
     try{
@@ -7,11 +9,10 @@ const criarVenda = async (req, res) =>{
 
         for(let item of produtos){
             const produto = await Produto.findById(item.produto)
-            if (!produto || produto.quantidade < item.quantidade) {
+           if (!produto || produto.quantidade < item.quantidade) {
                 return res.status(400).json({erro: 'Produto não encontrado ou estoque insuficiente'})
             }
         }
-
         const novaVenda = new venda({produtos, total})
         await novaVenda.save()
     
@@ -19,9 +20,10 @@ const criarVenda = async (req, res) =>{
             const produto = await Produto.findById(item.produto)
             produto.quantidade -= item.quantidade
             await produto.save()
-        }
+        } 
         res.status(201).json(novaVenda)
     }catch (err){
+        console.error(err);
         res.status(500).json({erro: 'Erro ao criar venda'})
     }
 }

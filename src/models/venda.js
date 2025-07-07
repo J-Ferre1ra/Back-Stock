@@ -17,7 +17,7 @@ const vendaSchema = new mongoose.Schema({
         required: true
     },
     data: {
-        type: Date, //manualmente
+        type: Date, 
         default: Date.now
     }
 })

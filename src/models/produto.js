@@ -13,7 +13,7 @@ const produtoSchema = new mongoose.Schema({
         type: Number,
         required: [true, 'A quantidade é obrigatória.'],
         default: 0,
-        min: [1, 'A quantidade deve ser maior que 0']
+        min: 0
     },
     preco: {
         type: Number,
