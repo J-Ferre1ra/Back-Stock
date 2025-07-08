@@ -44,7 +44,10 @@ app.use(express.urlencoded({extended: true, limit: '10mb'}))
 const despesaRoutes = require('./routes/despesaRoutes')
 app.use('/api', despesaRoutes)
 
-const relatorioRoutes = require('./routes/relatorioRoutes');
-app.use('/api', relatorioRoutes);
+const relatorioEstoqueRoutes = require('./routes/relatorioEstoqueRoutes')
+app.use('/api', relatorioEstoqueRoutes)
+
+const relatorioVendasRoutes = require('./routes/relatorioVendasRoutes')
+app.use('/api', relatorioVendasRoutes)
 
 module.exports = app
