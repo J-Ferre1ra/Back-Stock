@@ -1,4 +1,5 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     nome: {
@@ -10,11 +11,11 @@ const userSchema = new mongoose.Schema({
         unique: true,
         required: true
     },
-    senhaHash:{
+    senhaHash: {
         type: String,
         required: true
     },
-    role:{
+    role: {
         type: String,
         enum: ['admin'],
         default: 'admin'
@@ -26,6 +27,6 @@ const userSchema = new mongoose.Schema({
     ultimoAcesso: {
         type: Date
     }
-})
+});
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);

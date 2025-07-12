@@ -4,4 +4,6 @@ const AuthController = require('../controllers/authController')
 
 router.post('/login', AuthController.login)
 
+router.post('/cadastroComKey', AuthController.criarUsuarioComChave)
+
 module.exports = router
