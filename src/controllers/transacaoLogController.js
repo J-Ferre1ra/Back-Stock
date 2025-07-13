@@ -16,4 +16,13 @@ const registrarLogTransacao = async (usuarioId, acao, transacaoId) =>{
     }
 }
 
-module.exports = {registrarLogTransacao}
+const listarLogs = async (req, res) =>{
+    try{
+        const logs = await LogTransacao.find().populate('usuario', 'nome').populate('transacaoId').exec()
+        res.json(logs)
+    }catch(err) {
+        res.status(500).json({erro: 'Erro ao listar logs de transação'})
+    }
+}
+
+module.exports = {registrarLogTransacao, listarLogs}
