@@ -18,7 +18,9 @@ const transacaoSchema = new mongoose.Schema({
     },
     valor: {
         type: Number,
-        required: true
+        required: true,
+        default: 0,
+        min: 0
     },
     observacao: {
         type: String,
