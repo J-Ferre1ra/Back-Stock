@@ -1,40 +1,55 @@
-const venda = require('../models/venda')
-const Produto = require('../models/produto')
-const transacao = require('../models/transacao');
+const Venda = require('../models/venda');
+const Produto = require('../models/produto');
 
+const criarVenda = async (req, res) => {
+  try {
+    const { produtos } = req.body;
 
-const criarVenda = async (req, res) =>{
-    try{
-        const {produtos, total} = req.body
+    let total = 0;
+    const detalhesProdutos = [];
 
-        for(let item of produtos){
-            const produto = await Produto.findById(item.produto)
-           if (!produto || produto.quantidade < item.quantidade) {
-                return res.status(400).json({erro: 'Produto não encontrado ou estoque insuficiente'})
-            }
-        }
-        const novaVenda = new venda({produtos, total})
-        await novaVenda.save()
-    
-        for(let item of produtos){
-            const produto = await Produto.findById(item.produto)
-            produto.quantidade -= item.quantidade
-            await produto.save()
-        } 
-        res.status(201).json(novaVenda)
-    }catch (err){
-        console.error(err);
-        res.status(500).json({erro: 'Erro ao criar venda'})
+    for (let item of produtos) {
+      const produto = await Produto.findOne({ nome: item.nomeProduto });
+
+      if (!produto || produto.quantidade < item.quantidade) {
+        return res.status(400).json({ erro: `Produto "${item.nomeProduto}" não encontrado ou estoque insuficiente` });
+      }
+
+      const subtotal = item.valor * item.quantidade;
+      total += subtotal;
+
+      detalhesProdutos.push({
+        nomeProduto: item.nomeProduto,
+        quantidade: item.quantidade,
+        valor: item.valor,
+        subtotal
+      });
+
+      produto.quantidade -= item.quantidade;
+      await produto.save();
     }
-}
 
-const listarVendas = async (req, res) =>{
-    try{
-        const vendas = await venda.find()
-        res.json(vendas)
-    }catch(err) {
-        res.status(500).json({erro: 'Erro ao listar as vendas'})
-    }
-}
+    const novaVenda = new Venda({
+      produtos: detalhesProdutos,
+      total
+    });
 
-module.exports = {criarVenda, listarVendas}
+    await novaVenda.save();
+
+    res.status(201).json(novaVenda);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ erro: 'Erro ao criar venda' });
+  }
+};
+
+const listarVendas = async (req, res) => {
+  try {
+    const vendas = await Venda.find();
+    res.json(vendas);
+  } catch (err) {
+    res.status(500).json({ erro: 'Erro ao listar as vendas' });
+  }
+};
+
+module.exports = { criarVenda, listarVendas };
