@@ -6,10 +6,10 @@ const upload = require('../config/multer')
 
 router.post('/produtos', autenticarToken, upload.single('imagem') , produtoController.criarProduto)
 
-router.get('/produtos', autenticarToken, upload.single('imagem') , produtoController.listarProdutos)
+router.get('/produtos', autenticarToken, produtoController.listarProdutos)
 
-router.put('/produtos/:id', autenticarToken, upload.single('imagem') , produtoController.editarProduto)
+router.put('/produtos/:id', autenticarToken, produtoController.editarProduto)
 
-router.delete('/produtos/:id', autenticarToken, upload.single('imagem') ,produtoController.excluirProduto)
+router.delete('/produtos/:id', autenticarToken, produtoController.excluirProduto)
 
 module.exports = router

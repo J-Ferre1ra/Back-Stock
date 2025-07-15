@@ -4,7 +4,7 @@ const cloudinary = require('../config/cloudinary')
 
 const criarProduto = async (req, res) => {
   try {
-    const { nome, quantidade, preco } = req.body
+    const { nome, quantidade, preco, descricao } = req.body
 
     if (!nome || !quantidade || !preco) {
       return res.status(400).json({ erro: 'Campos obrigatórios não fornecidos' })
@@ -77,7 +77,7 @@ const listarProdutos = async (req, res) =>{
 const editarProduto = async (req, res) =>{
     try{
         const {id} = req.params
-        const {nome, quantidade, preco} = req.body
+        const {nome, quantidade, preco, descricao} = req.body
         
         const produto = await Produto.findById(id)
         if (!produto) {
@@ -87,6 +87,8 @@ const editarProduto = async (req, res) =>{
         produto.nome = nome || produto.nome
         produto.quantidade = quantidade || produto.quantidade
         produto.preco = preco || produto.preco
+        produto.descricao = descricao || produto.descricao
+
         
         await produto.save()
 
