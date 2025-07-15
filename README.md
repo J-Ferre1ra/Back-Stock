@@ -174,4 +174,4 @@ Você pode testar toda a API usando o Postman.
 
 
 
-Desenvolvido com 💻 por João Henrique F. C. da Silva
+Desenvolvido 💻 por João Henrique F. C. da Silva
