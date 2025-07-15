@@ -172,10 +172,6 @@ Você pode testar toda a API usando o Postman.
 
 ---
 
-## 📎 Licença
 
-Projeto feito para fins educacionais e comerciais. Livre para uso.
-
----
 
 Desenvolvido com 💻 por João Henrique F. C. da Silva
