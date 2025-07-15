@@ -1,6 +1,6 @@
 # 📦 Back Stock Master – API de Gestão de Estoque e Vendas
 
-Este sistema foi desenvolvido como projeto freelancer para uso interno da empresa [Nome da Empresa] com o objetivo de gerenciar produtos, vendas, clientes e controle financeiro, oferecendo relatórios e indicadores através de uma API REST.
+Este sistema foi desenvolvido como projeto freelancer para uso interno da empresa com o objetivo de gerenciar produtos, vendas, clientes e controle financeiro, oferecendo relatórios e indicadores através de uma API REST.
 
 ---
 
