@@ -6,13 +6,21 @@ const criarTransacao = async (req, res) =>{
     try{
         const { tipo, produto, quantidade, valor, observacao } = req.body
 
+        if(!['entrada', 'saída','venda'].includes(tipo)){
+            return res.status(400).json({erro: 'Tipo inválido. Os tipos válidos são "entrada", "saída" ou "venda".'})
+        }
+
+        if(quantidade <=0){
+            return res.status(400).json({erro: 'Quantidade deve ser maior que zero.'})
+        }
+
         const produtoExistente = await Produto.findOne({ nome: produto })
 
         if (!produtoExistente) {
             return res.status(404).json({ erro: 'Produto não encontrado' })
         }
 
-        if (tipo === 'saída' && produtoExistente.quantidade < quantidade) {
+        if ((tipo === 'saída' || tipo === 'venda') && produtoExistente.quantidade < quantidade) {
             return res.status(400).json({ erro: 'Estoque insuficiente' })
         }
 
@@ -29,7 +37,7 @@ const criarTransacao = async (req, res) =>{
 
         await novaTransacao.save()
 
-        if (tipo === 'saída') {
+        if (tipo === 'saída' || tipo === 'venda') {
             produtoExistente.quantidade -= quantidade
         } else if (tipo === 'entrada') {
             produtoExistente.quantidade += quantidade
