@@ -28,6 +28,13 @@ const login = async (req, res) => {
       { expiresIn: '2h' }
     )
 
+    
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 60 * 60 * 2000 
+    })
+
     res.status(200).json({
       mensagem: 'Login realizado com sucesso',
       token
