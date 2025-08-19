@@ -4,7 +4,7 @@ const criarDespesa = async (req,res) =>{
     try{
         const {descricao, valor, data} = req.body
         if(!descricao || valor === undefined){
-            return res.satus(400).json({erro: 'Descrição e valor são obrigatórios!'})
+            return res.status(400).json({erro: 'Descrição e valor são obrigatórios!'})
         }
 
         const novaDespesa = new Despesa({

@@ -24,7 +24,7 @@ const getDashboard = async (req, res) => {
       { $group: { _id: null, total: { $sum: "$valor" } } }
     ]);
     const saidas = await transacao.aggregate([
-      { $match: { tipo: 'saída' } },
+      { $match: { tipo: { $in: ['saída', 'venda'] } } },
       { $group: { _id: null, total: { $sum: "$valor" } } }
     ]);
     const totalEntradas = entradas.length > 0 ? entradas[0].total : 0;

@@ -10,8 +10,12 @@ const criarTransacao = async (req, res) =>{
             return res.status(400).json({erro: 'Tipo inválido. Os tipos válidos são "entrada", "saída" ou "venda".'})
         }
 
-        if(quantidade <=0){
-            return res.status(400).json({erro: 'Quantidade deve ser maior que zero.'})
+        if(!Number.isInteger(quantidade) || quantidade <=0){
+            return res.status(400).json({erro: 'Quantidade deve ser um número inteiro positivo.'})
+        }
+
+        if(valor <=0){
+            return res.status(400).json({erro: 'O valor da transação deve ser maior que zero.'})
         }
 
         const produtoExistente = await Produto.findOne({ nome: produto })
@@ -47,7 +51,7 @@ const criarTransacao = async (req, res) =>{
 
         const log = new LogTransacao({
             usuario: req.usuario.id,
-            acao: `${req.usuario.nome} registrou a ${tipo} de ${quantidade} unidades do produto ${produtoExistente.nome} por R${valorFinal}`,
+            acao: `${req.usuario.nome} registrou a transação do tipo ${tipo} de ${quantidade} unidades do produto ${produtoExistente.nome} por R${valorFinal}`,
             transacaoId: novaTransacao._id 
         })
 

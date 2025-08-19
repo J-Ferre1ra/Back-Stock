@@ -10,6 +10,11 @@ const criarCliente = async (req, res) =>{
             return res.status(400).json({erro: 'Cliente com esse CPF já existe.'})
         }
 
+        if (!nome || !cpf || !telefone) {
+            return res.status(400).json({ erro: 'Nome, CPF e telefone são obrigatórios.' });
+        }
+
+
         const novoCliente = new Cliente({nome, cpf, telefone})
         await novoCliente.save()
 
