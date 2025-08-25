@@ -8,11 +8,16 @@ Este sistema foi desenvolvido como um projeto freelance e está autorizado para 
 
 ## Funcionalidades
 
-- **Gestão de Produtos**: Criação, leitura, atualização e exclusão de produtos.
-- **Gestão de Transações**: Registra transações de entrada (reposições) e saída (vendas e leilões).
-- **Dashboard**: Visualização de métricas como total de vendas, despesas, estoque atual, etc.
-- **Relatórios em PDF**: Geração de relatórios detalhados de vendas e estoque com imagens.
-- **Autenticação**: Protege rotas sensíveis com **JWT** e **cookies HttpOnly**.
+- ✅ **CRUD de Produtos** com suporte a **múltiplas imagens (via Cloudinary)**
+- ✅ **Transações de Entrada, Saída e Venda** (incluindo múltiplos produtos por venda)
+- ✅ **Autenticação JWT** via Cookie HttpOnly
+- ✅ **Cadastro de administradores via CREATOR_KEY**
+- ✅ **Dashboard com totais de vendas, estoque, transações e despesas**
+- ✅ **Geração de relatórios em PDF** (com ou sem imagens)
+- ✅ **Logs de todas as ações (cadastros, exclusões, transações)**
+- ✅ **Filtros por nome e ordenação nas listagens**
+- ✅ **Filtros por intervalo de datas nas transações**
+- ✅ **Controle de estoque automático em vendas/entradas**
 
 ## Tecnologias Utilizadas
 
@@ -124,14 +129,25 @@ Evite commitar o arquivo .env no repositório para não expor suas credenciais.
 
 ### Testes
 Os testes podem ser realizados utilizando o Postman ou qualquer outro cliente HTTP. O fluxo básico de testes envolve:
+Autenticação protegida
 
-Criar um administrador com a CREATOR_KEY.
+- CRUD completo de produtos
 
-Fazer login e pegar o token JWT.
+- Vendas com múltiplos produtos
 
-Testar as rotas de CRUD de produtos e transações.
+- Reposição e saída com validações
 
-Validar o funcionamento do dashboard e geração de relatórios.
+- Estoque decrementado/atualizado
+
+- Relatórios gerados corretamente
+
+- Upload de múltiplas imagens
+
+- Cadastro via CREATOR_KEY
+
+- Filtros e ordenações
+
+- Logs sendo registrados corretamente
 
 ### Licença
 Desenvolvido por João Henrique Ferreira Constantino da Silva.
