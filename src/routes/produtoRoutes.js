@@ -4,7 +4,7 @@ const produtoController = require('../controllers/produtoController')
 const autenticarToken = require('../middleware/auth')
 const upload = require('../config/multer')
 
-router.post('/produtos', autenticarToken, upload.single('imagem') , produtoController.criarProduto)
+router.post('/produtos', autenticarToken, upload.array('imagens', 5) , produtoController.criarProduto)
 
 router.get('/produtos', autenticarToken, produtoController.listarProdutos)
 

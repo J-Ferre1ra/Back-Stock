@@ -14,27 +14,31 @@ const criarProduto = async (req, res) => {
       return res.status(400).json({ erro: 'A quantidade e o preço devem ser maiores que 0' })
     }
 
-    let imageUrl = ''
-    if (req.file) {
-      const result = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-          { folder: 'produtos' },
-          (error, result) => {
-            if (error) return reject(error)
-            resolve(result)
-          }
-        )
-        stream.end(req.file.buffer)
-      })
+    let imageUrls = []
 
-      imageUrl = result.secure_url
+    if (req.files) {
+      for (const file of req.files) {
+        const result = await new Promise((resolve, reject) => {
+          const stream = cloudinary.uploader.upload_stream(
+            { folder: 'produtos' }, 
+            (error, result) => {
+              if (error) return reject(error)
+              resolve(result)
+            }
+          )
+          stream.end(file.buffer)
+        })
+
+        imageUrls.push(result.secure_url)
+      }
     }
 
     const novoProduto = new Produto({
       nome,
       quantidade,
       preco,
-      imagem: imageUrl
+      descricao,
+      imagens: imageUrls 
     })
 
     await novoProduto.save()
@@ -43,11 +47,18 @@ const criarProduto = async (req, res) => {
       usuario: req.usuario.id,
       acao: `Criou o produto: ${novoProduto.nome}`
     })
-    await log.save()
+    await log.save();
 
-    res.status(201).json({
+     res.status(201).json({
       mensagem: 'Produto criado com sucesso',
-      produto: novoProduto
+      produto: {
+        nome: novoProduto.nome,
+        quantidade: novoProduto.quantidade,
+        preco: novoProduto.preco,
+        descricao: novoProduto.descricao,
+        imagens: novoProduto.imagens, 
+        _id: novoProduto._id
+      }
     })
 
   } catch (err) {

@@ -20,8 +20,9 @@ const produtoSchema = new mongoose.Schema({
         default: 0,
         required: false
     },
-    imagem: {
-    type: String 
+    imagens: {
+    type: [String],
+    required: false 
   }
 })
 
