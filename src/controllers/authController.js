@@ -31,7 +31,7 @@ const login = async (req, res) => {
     
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
+      secure: false,
       maxAge: 60 * 60 * 2000 
     })
 
@@ -73,7 +73,17 @@ const criarUsuarioComChave = async (req, res) => {
   }
 }
 
+const verificarToken = (req,res) =>{  
+  try{
+    const usuario = User.findOne({ email })
+    res.status(200).json({autenticado: true, usuario})
+  }catch(error){
+    res.status(401).json({autenticado: false})
+  }
+}
+
 module.exports = {
   login,
-  criarUsuarioComChave
+  criarUsuarioComChave,
+  verificarToken
 }
