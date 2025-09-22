@@ -31,7 +31,8 @@ const login = async (req, res) => {
     
     res.cookie('token', token, {
       httpOnly: true,
-      secure: false,
+      sameSite:'lax',
+      path: '/',
       maxAge: 60 * 60 * 2000 
     })
 
@@ -73,12 +74,23 @@ const criarUsuarioComChave = async (req, res) => {
   }
 }
 
-const verificarToken = (req,res) =>{  
-  try{
-    const usuario = User.findOne({ email })
-    res.status(200).json({autenticado: true, usuario})
-  }catch(error){
-    res.status(401).json({autenticado: false})
+const verificarToken = async (req, res) => {
+  try {
+    const token = req.cookies.token || (req.headers.authorization && req.headers.authorization.split(' ')[1]);
+    if (!token) {
+      return res.status(200).json({ usuario: null });
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+    const usuario = await User.findById(decoded.id).select('-senhaHash');
+    if (!usuario) {
+      return res.status(200).json({ usuario: null });
+    }
+
+    res.status(200).json({ usuario });
+  } catch (error) {
+    res.status(200).json({ usuario: null });
   }
 }
 
