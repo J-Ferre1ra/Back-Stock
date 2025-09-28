@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 const User = require('../models/user')
+const { path } = require('pdfkit')
 
 const login = async (req, res) => {
   const { email, senha } = req.body
@@ -94,8 +95,19 @@ const verificarToken = async (req, res) => {
   }
 }
 
+const logout = (req, res) => {
+  res.clearCookie('token',{
+    httpOnly: true,
+    sameSite:'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/'
+  })
+  res.status(200).json({ mensagem: 'Logout realizado com sucesso' })
+}
+
 module.exports = {
   login,
   criarUsuarioComChave,
-  verificarToken
+  verificarToken,
+  logout
 }

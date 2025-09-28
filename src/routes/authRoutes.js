@@ -9,4 +9,6 @@ router.post('/cadastroComKey', AuthController.criarUsuarioComChave)
 
 router.get('/verificar-token', autenticarToken, AuthController.verificarToken)
 
+router.post('/logout', AuthController.logout)
+
 module.exports = router
