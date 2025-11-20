@@ -31,7 +31,12 @@ const getDashboard = async (req, res) => {
     const totalSaidas = saidas.length > 0 ? saidas[0].total : 0;
     const saldoAtual = (totalEntradas + totalVendasValor) - totalSaidas;;
 
-    const transacoesRecentes = await transacao.find().sort({ data: -1 }).limit(5);
+    const transacoesRecentes = await transacao
+      .find()
+      .populate("produto", "nome")
+      .sort({ data: -1 })
+      .limit(5);
+
 
     const itensComEstoqueBaixo = await produto.find({ quantidade: { $lt: 10 } });
 
