@@ -54,6 +54,9 @@ app.use('/api', relatorioEstoqueRoutes)
 const relatorioVendasRoutes = require('./routes/relatorioVendasRoutes')
 app.use('/api', relatorioVendasRoutes)
 
+const relatorioTransacaoRoutes = require('./routes/relatorioTransacaoRoutes')
+app.use('/api', relatorioTransacaoRoutes)
+
 const logRoutes = require('./routes/logRoutes')
 app.use('/api', logRoutes)
 
