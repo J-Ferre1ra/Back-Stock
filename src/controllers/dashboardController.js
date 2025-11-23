@@ -7,10 +7,12 @@ const getDashboard = async (req, res) => {
   try {
     const totalProdutos = await produto.countDocuments();
 
-    const totalVendas = await venda.aggregate([
-      { $group: { _id: null, total: { $sum: "$total" } } }
+    const totalVendasAgg = await transacao.aggregate([
+      { $match: { tipo: 'venda' } },
+      { $group: { _id: null, total: { $sum: "$valor" } } }
     ]);
-    const totalVendasValor = totalVendas.length > 0 ? totalVendas[0].total : 0;
+    const totalVendasValor = totalVendasAgg.length > 0 ? totalVendasAgg[0].total : 0;
+
 
     const totalDespesas = await despesa.aggregate([
       { $group: { _id: null, total: { $sum: "$valor" } } }
