@@ -122,6 +122,35 @@ Para cadastrar um novo administrador (funcionário com permissões de acesso ao 
     "creatorKey": "<chave-para-cadastro>"
 }
 ````
+## 🔗 Integração com o Front-end
+
+O front-end do Back-Stock-Master se comunica diretamente com esta API utilizando Axios.
+Todas as requisições são feitas para os endpoints iniciados com /api/*, e o token JWT é enviado automaticamente através do cookie HttpOnly configurado no login.
+
+No front-end, a URL base da API é definida em:
+
+src/services/api.js
+
+
+Exemplo de configuração:
+
+export const api = axios.create({
+  baseURL: "http://localhost:3000/api",
+  withCredentials: true
+});
+
+
+O fluxo funciona assim:
+
+O usuário realiza login → backend retorna JWT via cookie
+
+O front envia automaticamente esse cookie em todas as requisições
+
+O backend valida o JWT e autoriza as rotas privadas
+
+O front consome os módulos: produtos, transações, clientes, dashboard e relatórios
+
+---
 ### Observações Importantes
 CREATOR_KEY é uma variável sensível, e deve ser configurada no arquivo .env como uma chave secreta.
 
