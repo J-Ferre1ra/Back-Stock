@@ -4,25 +4,31 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const cookieParser = require('cookie-parser')
 
-
 const app = express()
 
-const corsOptions = {
-  origin: 'https://estoquemaster.vercel.app',         
-  credentials: true,                         
-  methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
-  allowedHeaders: ['Content-Type','Authorization']
-}
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://estoquemaster.vercel.app"
+]
 
-app.use(cors(corsOptions));
+app.use(cors({
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, origin)
+    }
+    return callback(new Error("CORS bloqueado: " + origin))
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}))
 
 app.use(express.json())
 app.use(cookieParser())
 
-mongoose.connect(process.env.MONGO_URI, {
-}).then(()=> console.log('Conectado ao MongoDB Atlas'))
-.catch((err) => console.error('Erro ao conectar ao MongoDB', err))
-
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => console.log('Conectado ao MongoDB Atlas'))
+  .catch((err) => console.error('Erro ao conectar ao MongoDB', err))
 
 const authRouter = require('./routes/authRoutes')
 app.use('/api', authRouter)
@@ -42,9 +48,6 @@ app.use('/api', transacaoRoutes)
 const clienteRoutes = require('./routes/clienteRoutes')
 app.use('/api', clienteRoutes)
 
-app.use(express.json({limit: '10mb'}))
-app.use(express.urlencoded({extended: true, limit: '10mb'}))
-
 const despesaRoutes = require('./routes/despesaRoutes')
 app.use('/api', despesaRoutes)
 
@@ -59,6 +62,5 @@ app.use('/api', relatorioTransacaoRoutes)
 
 const logRoutes = require('./routes/logRoutes')
 app.use('/api', logRoutes)
-
 
 module.exports = app
