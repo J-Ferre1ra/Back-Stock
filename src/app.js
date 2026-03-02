@@ -6,14 +6,10 @@ const cookieParser = require('cookie-parser')
 
 const app = express()
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://estoquemaster.vercel.app"
-]
 
 app.use(cors({
   origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || process.env.FRONTEND_URL === origin) {
       return callback(null, origin)
     }
     return callback(new Error("CORS bloqueado: " + origin))
