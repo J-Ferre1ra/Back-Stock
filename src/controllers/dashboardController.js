@@ -14,24 +14,27 @@ const getDashboard = async (req, res) => {
     const totalVendasValor = totalVendasAgg.length > 0 ? totalVendasAgg[0].total : 0;
 
 
-    const totalDespesas = await despesa.aggregate([
-      { $group: { _id: null, total: { $sum: "$valor" } } }
-    ]);
-    const totalDespesasValor = totalDespesas.length > 0 ? totalDespesas[0].total : 0;
+    // Compras de estoque (entrada)
+const comprasAgg = await transacao.aggregate([
+  { $match: { tipo: 'entrada' } },
+  { $group: { _id: null, total: { $sum: "$valor" } } }
+]);
+const totalCompras = comprasAgg.length > 0 ? comprasAgg[0].total : 0;
 
-    const lucroLiquido = totalVendasValor - totalDespesasValor;
+const perdasAgg = await transacao.aggregate([
+  { $match: { tipo: 'saída' } },
+  { $group: { _id: null, total: { $sum: "$valor" } } }
+]);
+const totalPerdas = perdasAgg.length > 0 ? perdasAgg[0].total : 0;
 
-    const entradas = await transacao.aggregate([
-      { $match: { tipo: 'entrada' } },
-      { $group: { _id: null, total: { $sum: "$valor" } } }
-    ]);
-    const saidas = await transacao.aggregate([
-      { $match: { tipo: { $in: ['saída', 'venda'] } } },
-      { $group: { _id: null, total: { $sum: "$valor" } } }
-    ]);
-    const totalEntradas = entradas.length > 0 ? entradas[0].total : 0;
-    const totalSaidas = saidas.length > 0 ? saidas[0].total : 0;
-    const saldoAtual = (totalEntradas + totalVendasValor) - totalSaidas;;
+const despesasAgg = await transacao.aggregate([
+  { $match: { tipo: 'despesa' } },
+  { $group: { _id: null, total: { $sum: "$valor" } } }
+]);
+const totalDespesasValor = despesasAgg.length > 0 ? despesasAgg[0].total : 0;
+
+const resultadoFinanceiro =
+  totalVendasValor - totalCompras - totalPerdas - totalDespesasValor;
 
     const transacoesRecentes = await transacao
       .find()
@@ -46,8 +49,8 @@ const getDashboard = async (req, res) => {
       totalProdutos,
       totalVendas: totalVendasValor,
       totalDespesas: totalDespesasValor,
-      lucroLiquido,
-      saldoAtual,
+      lucroLiquido: resultadoFinanceiro,
+      saldoAtual: resultadoFinanceiro,
       transacoesRecentes,
       itensComEstoqueBaixo
     });
