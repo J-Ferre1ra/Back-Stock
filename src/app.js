@@ -8,16 +8,9 @@ const app = express()
 
 
 app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || process.env.FRONTEND_URL === origin) {
-      return callback(null, origin)
-    }
-    return callback(new Error("CORS bloqueado: " + origin))
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}))
+  origin: process.env.FRONTEND_URL,
+  credentials: true
+}));
 
 app.use(express.json())
 app.use(cookieParser())
