@@ -50,7 +50,12 @@ const gerarRelatorioTransacoes = async (req, res) => {
       else if (t.tipo === "despesa") totalDespesa += v;
     });
 
-    const saldoFinal = totalEntrada + totalVenda - (totalSaida + totalDespesa);
+    const receita = totalVenda;
+    const custoEstoque = totalEntrada;
+    const perdas = totalSaida;
+    const despesas = totalDespesa;
+
+    const resultado = receita - custoEstoque - perdas - despesas;
 
     const doc = new PDFDocument({ autoFirstPage: true, margin: 50 });
 
@@ -93,12 +98,12 @@ const gerarRelatorioTransacoes = async (req, res) => {
 
     doc.fontSize(14).text("Resumo Financeiro", { underline: true });
     doc.moveDown(0.5);
-    doc.fontSize(12).text(`Total Entradas: ${moeda(totalEntrada)}`);
-    doc.text(`Total Saídas: ${moeda(totalSaida)}`);
-    doc.text(`Total Vendas: ${moeda(totalVenda)}`);
-    doc.text(`Total Despesas: ${moeda(totalDespesa)}`);
+    doc.fontSize(12).text(`Receita Total (Vendas): ${moeda(receita)}`);
+    doc.text(`Custo com Estoque (Compras): ${moeda(custoEstoque)}`);
+    doc.text(`Perdas / Prejuízos: ${moeda(perdas)}`);
+    doc.text(`Despesas Operacionais: ${moeda(despesas)}`);
     doc.text("----------------------------------------");
-    doc.text(`Saldo Final: ${moeda(saldoFinal)}`);
+    doc.text(`Resultado (Lucro / Prejuízo): ${moeda(resultado)}`);
     doc.moveDown();
 
     doc.fontSize(14).text("Transações", { underline: true });
