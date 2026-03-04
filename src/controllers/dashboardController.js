@@ -1,7 +1,5 @@
 const produto = require("../models/produto");
-const venda = require('../models/venda');
 const transacao = require('../models/transacao');
-const despesa = require('../models/despesa');
 
 const getDashboard = async (req, res) => {
   try {
