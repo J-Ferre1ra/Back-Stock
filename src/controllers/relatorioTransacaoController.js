@@ -70,8 +70,9 @@ const gerarRelatorioTransacoes = async (req, res) => {
     doc.fontSize(18).text("Relatório de Transações", { align: "center" });
     doc.moveDown();
     doc.fontSize(12).text(
-      `Data de geração: ${new Date().toLocaleDateString("pt-BR")}`,
-      { align: "center" }
+      `Data de geração: ${new Date().toLocaleDateString("pt-BR", {
+        timeZone: "America/Sao_Paulo"
+      })}`
     );
     doc.moveDown();
 
@@ -111,7 +112,9 @@ const gerarRelatorioTransacoes = async (req, res) => {
 
     transacoes.forEach((t) => {
       const data = t.data
-        ? new Date(t.data).toLocaleString("pt-BR")
+        ? new Date(t.data).toLocaleString("pt-BR", {
+        timeZone: "America/Sao_Paulo"
+        })
         : "-";
 
       doc.fontSize(12).text(`Data: ${data}`);
