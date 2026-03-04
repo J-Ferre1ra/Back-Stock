@@ -37,9 +37,10 @@ const gerarRelatorioEstoqueComImagens = async (req, res) => {
     doc.moveDown();
     doc
       .fontSize(12)
-      .text(`Data de geração: ${new Date().toLocaleDateString()}`, {
-        align: 'center'
-      });
+      .text(`Data de geração: ${new Date().toLocaleDateString("pt-BR", {
+        timeZone: "America/Sao_Paulo"
+      })}`
+      );
     doc.moveDown();
 
     // PRODUTOS
